@@ -1,0 +1,88 @@
+<template>
+  <div id="app">
+    <h1>Anställda</h1>
+    <div class="employees">
+      <EmployeeCard v-for="employee in employees" :key="employee.id" :employee="employee" />
+    </div>
+    <button @click="loadMore" v-if="currentPage < totalPages">Ladda Mer</button>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import EmployeeCard from './components/EmployeeCard.vue';
+
+export default {
+  name: 'App',
+  components: {
+    EmployeeCard,
+  },
+  data() {
+    return {
+      employees: [],
+      currentPage: 1,
+      totalPages: 1,
+    };
+  },
+  created() {
+    this.fetchEmployees(this.currentPage);
+  },
+  methods: {
+    async fetchEmployees(page) {
+      try {
+        const response = await axios.get(`https://reqres.in/api/users?page=${page}`);
+        this.employees = [...this.employees, ...response.data.data];
+        this.totalPages = response.data.total_pages;
+        this.currentPage = page;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    loadMore() {
+      this.fetchEmployees(this.currentPage + 1);
+    }
+  }
+};
+</script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+#app {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.employees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+</style>

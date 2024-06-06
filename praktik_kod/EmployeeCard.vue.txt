@@ -1,0 +1,55 @@
+<template>
+  <div class="employee-card">
+    <img :src="employee.avatar" :alt="`${employee.first_name} ${employee.last_name}`" class="profile-pic">
+    <h2>{{ employee.first_name }} {{ employee.last_name }}</h2>
+    <a :href="`mailto:${employee.email}`">{{ employee.email }}</a>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'EmployeeCard',
+  props: {
+    employee: Object,
+  },
+};
+</script>
+
+<style>
+.employee-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.employee-card:hover {
+  transform: scale(1.05);
+}
+
+.profile-pic {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.employee-card h2 {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+.employee-card a {
+  display: block;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 5px;
+}
+
+.employee-card a:hover {
+  text-decoration: underline;
+}
+</style>
